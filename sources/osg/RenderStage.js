@@ -265,10 +265,21 @@ MACROUTILS.createPrototypeObject(
             state.applyAttribute(this.viewport);
 
             // fragment clipping
+
             if (this.camera) {
                 var scissor =
                     this.camera.getStateSet() && this.camera.getStateSet().getAttribute('Scissor');
-                if (scissor) state.applyAttribute(scissor);
+                if (scissor) {
+                    state.applyAttribute(scissor);
+                } else {
+                    gl.scissor(
+                        this.viewport.x(),
+                        this.viewport.y(),
+                        this.viewport.width(),
+                        this.viewport.height()
+                    );
+                    gl.enable(gl.SCISSOR_TEST, true);
+                }
             }
 
             /*jshint bitwise: false */
